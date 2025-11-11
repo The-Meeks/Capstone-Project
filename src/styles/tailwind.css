@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base { 
+  :root {  
+    /* Core Colors */
+    --color-background: #FEFEFE; /* warm-white */
+    --color-foreground: #212529; /* near-black */
+    --color-border: #E9ECEF; /* light-gray */
+    --color-input: #FFFFFF; /* white */
+    --color-ring: #2D6A4F; /* medium-green */
+
+    /* Card Colors */
+    --color-card: #FFFFFF; /* white */
+    --color-card-foreground: #212529; /* near-black */
+    --color-popover: #FFFFFF; /* white */
+    --color-popover-foreground: #212529; /* near-black */
+
+    /* Muted Colors */
+    --color-muted: #F8F9FA; /* subtle-gray */
+    --color-muted-foreground: #6C757D; /* medium-gray */
+
+    /* Primary Colors */
+    --color-primary: #1B4332; /* deep-forest-green */
+    --color-primary-foreground: #FFFFFF; /* white */
+
+    /* Secondary Colors */
+    --color-secondary: #B7950B; /* warm-academic-gold */
+    --color-secondary-foreground: #FFFFFF; /* white */
+
+    /* Accent Colors */
+    --color-accent: #2D6A4F; /* medium-green */
+    --color-accent-foreground: #FFFFFF; /* white */
+
+    /* Destructive Colors */
+    --color-destructive: #DC3545; /* clear-red */
+    --color-destructive-foreground: #FFFFFF; /* white */
+
+    /* Success Colors */
+    --color-success: #198754; /* professional-green */
+    --color-success-foreground: #FFFFFF; /* white */
+
+    /* Warning Colors */
+    --color-warning: #FD7E14; /* warm-orange */
+    --color-warning-foreground: #FFFFFF; /* white */
+
+    /* Error Colors */
+    --color-error: #DC3545; /* clear-red */
+    --color-error-foreground: #FFFFFF; /* white */
+
+    /* Border Radius */
+    --radius: 0.25rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Crimson Text', serif;
+  }
+
+  body, p, span, div, button, input, textarea, select {
+    font-family: 'Inter', sans-serif;
+  }
+
+  .font-caption {
+    font-family: 'Source Sans Pro', sans-serif;
+  }
+
+  .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+@layer components {
+  .elevation-1 {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .elevation-2 {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .elevation-3 {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  .transition-academic {
+    transition: all 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .transition-hover {
+    transition: all 150ms ease-out;
+  }
+
+  .transition-disclosure {
+    transition: height 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .transition-section {
+    transition: opacity 400ms ease-out, transform 400ms ease-out;
+  }
+
+  .animate-pulse-subtle {
+    animation: pulse-subtle 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-subtle {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.8;
+    }
+  }
+
+  .scale-press {
+    transform: scale(0.98);
+  }
+
+  .hover-elevation {
+    @apply transition-hover;
+  }
+
+  .hover-elevation:hover {
+    @apply elevation-1;
+    transform: translateY(-1px);
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
