@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import Header from '../../components/ui/Header';
 import Sidebar from '../../components/ui/Sidebar';
-import DocumentOutline from './components/DocumentOutline';
-import ReadingControls from './components/ReadingControls';
-import BookmarkPanel from './components/BookmarkPanel';
-import SearchPanel from './components/SearchPanel';
-import EssayViewer from './components/EssayViewer';
-import { EssayDocument, ReadingProgress, ViewerSettings, Bookmark, SearchResult } from './types';
+
+import { EssayDocument, ReadingProgress, ViewerSettings, Bookmark, SearchResult } from './Types/index';
+import DocumentOutline from './Components/DocumentOutline';
+import ReadingControls from './Components/ReadingControl';
+import EssayViewer from './Components/EssayViewer';
+import BookmarkPanel from './Components/BookMarkPanel';
+import SearchPanel from './Components/SearchPanel';
 
 const EssayDocumentViewer = () => {
   const [currentLanguage, setCurrentLanguage] = useState('en');

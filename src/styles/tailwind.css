@@ -1,73 +1,79 @@
+/* Import fonts */
 @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&display=swap');
 
+/* Tailwind directives */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Base layer: colors, fonts, global styles */
 @layer base { 
   :root {  
     /* Core Colors */
-    --color-background: #FEFEFE; /* warm-white */
-    --color-foreground: #212529; /* near-black */
-    --color-border: #E9ECEF; /* light-gray */
-    --color-input: #FFFFFF; /* white */
-    --color-ring: #2D6A4F; /* medium-green */
+    --color-background: #FEFEFE;
+    --color-foreground: #212529;
+    --color-border: #E9ECEF;
+    --color-input: #FFFFFF;
+    --color-ring: #2D6A4F;
 
     /* Card Colors */
-    --color-card: #FFFFFF; /* white */
-    --color-card-foreground: #212529; /* near-black */
-    --color-popover: #FFFFFF; /* white */
-    --color-popover-foreground: #212529; /* near-black */
+    --color-card: #FFFFFF;
+    --color-card-foreground: #212529;
+    --color-popover: #FFFFFF;
+    --color-popover-foreground: #212529;
 
     /* Muted Colors */
-    --color-muted: #F8F9FA; /* subtle-gray */
-    --color-muted-foreground: #6C757D; /* medium-gray */
+    --color-muted: #F8F9FA;
+    --color-muted-foreground: #6C757D;
 
     /* Primary Colors */
-    --color-primary: #1B4332; /* deep-forest-green */
-    --color-primary-foreground: #FFFFFF; /* white */
+    --color-primary: #1B4332;
+    --color-primary-foreground: #FFFFFF;
 
     /* Secondary Colors */
-    --color-secondary: #B7950B; /* warm-academic-gold */
-    --color-secondary-foreground: #FFFFFF; /* white */
+    --color-secondary: #B7950B;
+    --color-secondary-foreground: #FFFFFF;
 
     /* Accent Colors */
-    --color-accent: #2D6A4F; /* medium-green */
-    --color-accent-foreground: #FFFFFF; /* white */
+    --color-accent: #2D6A4F;
+    --color-accent-foreground: #FFFFFF;
 
     /* Destructive Colors */
-    --color-destructive: #DC3545; /* clear-red */
-    --color-destructive-foreground: #FFFFFF; /* white */
+    --color-destructive: #DC3545;
+    --color-destructive-foreground: #FFFFFF;
 
     /* Success Colors */
-    --color-success: #198754; /* professional-green */
-    --color-success-foreground: #FFFFFF; /* white */
+    --color-success: #198754;
+    --color-success-foreground: #FFFFFF;
 
     /* Warning Colors */
-    --color-warning: #FD7E14; /* warm-orange */
-    --color-warning-foreground: #FFFFFF; /* white */
+    --color-warning: #FD7E14;
+    --color-warning-foreground: #FFFFFF;
 
     /* Error Colors */
-    --color-error: #DC3545; /* clear-red */
-    --color-error-foreground: #FFFFFF; /* white */
+    --color-error: #DC3545;
+    --color-error-foreground: #FFFFFF;
 
     /* Border Radius */
     --radius: 0.25rem;
   }
 
   * {
-    @apply border-border;
+    border: 1px solid var(--color-border);
   }
+  
 
   body {
-    @apply bg-background text-foreground;
+    background-color: var(--color-background);
+    color: var(--color-foreground);
     font-feature-settings: "rlig" 1, "calt" 1;
   }
+  
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,h2,h3,h4,h5,h6 {
     font-family: 'Crimson Text', serif;
   }
 
@@ -84,64 +90,32 @@
   }
 }
 
+/* Components layer: elevations, transitions, animations */
 @layer components {
-  .elevation-1 {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
+  .elevation-1 { box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
+  .elevation-2 { box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+  .elevation-3 { box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); }
 
-  .elevation-2 {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
+  .transition-academic { transition: all 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+  .transition-hover { transition: all 150ms ease-out; }
+  .transition-disclosure { transition: height 300ms cubic-bezier(0.4, 0, 0.2, 1); }
+  .transition-section { transition: opacity 400ms ease-out, transform 400ms ease-out; }
 
-  .elevation-3 {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-  }
+  .animate-pulse-subtle { animation: pulse-subtle 2s ease-in-out infinite; }
+  @keyframes pulse-subtle { 0%,100%{opacity:1}50%{opacity:0.8} }
 
-  .transition-academic {
-    transition: all 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  }
-
-  .transition-hover {
-    transition: all 150ms ease-out;
-  }
-
-  .transition-disclosure {
-    transition: height 300ms cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .transition-section {
-    transition: opacity 400ms ease-out, transform 400ms ease-out;
-  }
-
-  .animate-pulse-subtle {
-    animation: pulse-subtle 2s ease-in-out infinite;
-  }
-
-  @keyframes pulse-subtle {
-    0%, 100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.8;
-    }
-  }
-
-  .scale-press {
-    transform: scale(0.98);
-  }
+  .scale-press { transform: scale(0.98); }
 
   .hover-elevation {
     @apply transition-hover;
   }
-
   .hover-elevation:hover {
     @apply elevation-1;
     transform: translateY(-1px);
   }
 }
 
+/* Utilities layer: extra utilities */
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+  .text-balance { text-wrap: balance; }
 }
