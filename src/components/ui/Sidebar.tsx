@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Icon from '../AppIcon';
 import Button from './Button';
@@ -29,6 +29,34 @@ const Sidebar = ({
 }: SidebarProps) => {
   const location = useLocation();
   const [expandedSections, setExpandedSections] = useState<string[]>(['documents', 'media']);
+
+  // Hide on scroll
+  const [hideOnScroll, setHideOnScroll] = useState(false);
+
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
+
+    const handleScroll = () => {
+      const currentY = window.scrollY;
+
+      // show only when back to top
+      if (currentY <= 0) {
+        setHideOnScroll(false);
+        lastScrollY = currentY;
+        return;
+      }
+
+      // scroll down → hide
+      if (currentY > lastScrollY) {
+        setHideOnScroll(true);
+      }
+
+      lastScrollY = currentY;
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const languages = [
     { code: 'en', label: 'English', flag: '🇺🇸' },
@@ -65,154 +93,142 @@ const Sidebar = ({
 
   const currentLang = languages.find((lang) => lang.code === currentLanguage) || languages[0];
 
-  const toggleSection = (sectionId: string) => {
+  const toggleSection = (id: string) => {
     setExpandedSections((prev) =>
-      prev.includes(sectionId) ? prev.filter((id) => id !== sectionId) : [...prev, sectionId]
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
     );
   };
 
-  const isActive = (path?: string) => (path ? location.pathname === path : false);
-
-  const handleLanguageSelect = (langCode: string) => {
-    onLanguageChange?.(langCode);
-  };
+  const isActive = (path?: string) =>
+    path ? location.pathname === path : false;
 
   const handleNavigation = (path?: string) => {
     if (!path) return;
     onMobileClose?.();
-    window.location.href = path;
+    setTimeout(() => (window.location.href = path), 80);
   };
 
   return (
-    <div
-      className={`flex-shrink-0 transition-all duration-300
-        ${isCollapsed ? 'w-20' : 'w-64'}
-        ${isMobileOpen ? 'translate-x-0' : '-translate-x-full'}
-        lg:translate-x-0 fixed lg:static h-full z-30 bg-card border-r border-border`}
-    >
-      <div className="flex flex-col h-full">
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-border">
-          {!isCollapsed && (
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <Icon name="GraduationCap" size={20} color="white" />
-              </div>
-              <div>
-                <h2 className="text-sm font-heading font-semibold text-foreground">Student Portfolio</h2>
-                <p className="text-xs text-muted-foreground font-caption">Capstone Showcase</p>
-              </div>
-            </div>
-          )}
+    <>
+      {/* Mobile Overlay */}
+      {isMobileOpen && (
+        <div
+          onClick={onMobileClose}
+          className="fixed inset-0 bg-black/40 z-40 lg:hidden"
+        />
+      )}
 
-          {/* Mobile Close Button */}
-          <Button variant="ghost" size="icon" onClick={onMobileClose} className="lg:hidden">
-            <Icon name="X" size={20} />
-          </Button>
-        </div>
+      {/* SIDEBAR */}
+      <div
+        className={`
+          fixed lg:static
+          top-16                 /* 64px offset below header */
+          h-[calc(100vh-4rem)]   /* full height minus header height */
+          z-50                  
+          bg-gray-100 dark:bg-gray-800 border-r border-border
+          transition-all duration-300
+          
+          ${isCollapsed ? 'w-20' : 'w-64'}
+      
+          /* mobile & desktop scroll-hide behavior */
+          ${isMobileOpen ? 'translate-x-0' 
+            : hideOnScroll 
+              ? '-translate-x-full' 
+              : 'translate-x-0'}
+  
+          lg:${hideOnScroll ? '-translate-x-full' : 'translate-x-0'}
+        `}
+      >
+        <div className="flex flex-col h-full">
 
-        {/* Language Selector */}
-        {!isCollapsed && (
-          <div className="p-4 border-b border-border lg:hidden">
-            <div className="relative group">
-              <Button variant="outline" size="sm" className="w-full justify-between">
-                <div className="flex items-center space-x-2">
-                  <span>{currentLang.flag}</span>
-                  <span className="text-sm">{currentLang.label}</span>
-                </div>
-                <Icon name="ChevronDown" size={16} />
-              </Button>
-              <div className="absolute top-full left-0 right-0 mt-1 bg-popover border border-border rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                {languages.map((lang) => (
-                  <button
-                    key={lang.code}
-                    onClick={() => handleLanguageSelect(lang.code)}
-                    className={`w-full flex items-center space-x-3 px-3 py-2 text-sm hover:bg-muted transition-hover ${
-                      currentLanguage === lang.code ? 'bg-accent/10 text-accent' : 'text-foreground'
-                    }`}
-                  >
-                    <span>{lang.flag}</span>
-                    <span>{lang.label}</span>
-                    {currentLanguage === lang.code && <Icon name="Check" size={16} className="ml-auto" />}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
+          {/* Navigation */}
+          <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
+            {navigationItems.map((item) => {
 
-        {/* Navigation */}
-        <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
-          {navigationItems.map((item) => {
-            if (item.section === 'group') {
-              const isExpanded = expandedSections.includes(item.id);
-              return (
-                <div key={item.id} className="space-y-1">
-                  <button
-                    onClick={() => toggleSection(item.id)}
-                    className={`w-full flex items-center justify-between p-3 rounded-lg text-sm font-medium hover:bg-muted transition-colors group ${
-                      isCollapsed ? 'justify-center' : ''
-                    }`}
-                  >
-                    <div className="flex items-center space-x-3">
-                      <Icon name={item.icon} size={18} className="text-muted-foreground group-hover:text-foreground transition-colors" />
-                      {!isCollapsed && <span className="text-muted-foreground group-hover:text-foreground transition-colors">{item.label}</span>}
-                    </div>
-                    {!isCollapsed && <Icon name="ChevronDown" size={16} className={`text-muted-foreground transition-transform ${isExpanded ? 'rotate-180' : ''}`} />}
-                  </button>
+              if (item.section === 'group') {
+                const expanded = expandedSections.includes(item.id);
 
-                  {!isCollapsed && isExpanded && item.children && (
-                    <div className="ml-6 space-y-1">
-                      {item.children.map((child) =>
-                        child.path ? (
+                return (
+                  <div key={item.id} className="space-y-1">
+                    <button
+                      onClick={() => toggleSection(item.id)}
+                      className={`w-full flex items-center justify-between p-3 rounded-lg
+                        text-sm font-medium hover:bg-muted group 
+                        ${isCollapsed ? 'justify-center' : ''}`}
+                    >
+                      <div className="flex items-center space-x-3">
+                        <Icon name={item.icon} size={18} />
+                        {!isCollapsed && <span>{item.label}</span>}
+                      </div>
+
+                      {!isCollapsed && (
+                        <Icon
+                          name="ChevronDown"
+                          size={16}
+                          className={`transition-transform 
+                            ${expanded ? 'rotate-180' : ''}`}
+                        />
+                      )}
+                    </button>
+
+                    {expanded && !isCollapsed && (
+                      <div className="ml-6 space-y-1">
+                        {item.children?.map((child) => (
                           <button
                             key={child.id}
                             onClick={() => handleNavigation(child.path)}
-                            className={`w-full flex items-center space-x-3 p-2 rounded-md text-sm hover:bg-muted transition-colors ${
-                              isActive(child.path) ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
-                            }`}
+                            className={`
+                              w-full flex items-center p-2 space-x-3 rounded-md text-sm
+                              hover:bg-muted transition-colors
+                              ${isActive(child.path) 
+                                ? 'bg-primary text-primary-foreground'
+                                : 'text-muted-foreground'}
+                            `}
                           >
-                            <Icon name={child.icon} size={16} className={isActive(child.path) ? 'text-primary-foreground' : 'text-muted-foreground'} />
+                            <Icon name={child.icon} size={16} />
                             <span>{child.label}</span>
                           </button>
-                        ) : null
-                      )}
-                    </div>
-                  )}
-                </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleNavigation(item.path)}
+                  className={`
+                    w-full flex items-center p-3 space-x-3 rounded-lg text-sm font-medium
+                    hover:bg-muted group transition-colors
+                    ${isCollapsed ? 'justify-center' : ''}
+                    ${isActive(item.path)
+                      ? 'bg-primary text-primary-foreground'
+                      : 'text-muted-foreground'}
+                  `}
+                >
+                  <Icon name={item.icon} size={18} />
+                  {!isCollapsed && <span>{item.label}</span>}
+                </button>
               );
-            }
+            })}
+          </nav>
 
-            return item.path ? (
-              <button
-                key={item.id}
-                onClick={() => handleNavigation(item.path)}
-                className={`w-full flex items-center space-x-3 p-3 rounded-lg text-sm font-medium hover:bg-muted transition-colors group ${
-                  isActive(item.path) ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
-                } ${isCollapsed ? 'justify-center' : ''}`}
-              >
-                <Icon name={item.icon} size={18} className={isActive(item.path) ? 'text-primary-foreground' : 'text-muted-foreground group-hover:text-foreground'} />
-                {!isCollapsed && <span>{item.label}</span>}
-              </button>
-            ) : null;
-          })}
-        </nav>
-
-        {/* Footer */}
-        {!isCollapsed && (
-          <div className="p-4 border-t border-border space-y-2">
-            <Button variant="ghost" size="sm" className="w-full justify-start text-muted-foreground hover:text-foreground">
-              <Icon name="Settings" size={16} className="mr-3" />
-              Settings
-            </Button>
-            <Button variant="ghost" size="sm" className="w-full justify-start text-muted-foreground hover:text-foreground">
-              <Icon name="HelpCircle" size={16} className="mr-3" />
-              Help & Support
-            </Button>
-          </div>
-        )}
+          {/* FOOTER */}
+          {!isCollapsed && (
+            <div className="p-4 border-t border-border space-y-2">
+              <Button variant="ghost" size="sm" className="w-full justify-start">
+                <Icon name="Settings" size={16} /> Settings
+              </Button>
+              <Button variant="ghost" size="sm" className="w-full justify-start">
+                <Icon name="HelpCircle" size={16} /> Help & Support
+              </Button>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

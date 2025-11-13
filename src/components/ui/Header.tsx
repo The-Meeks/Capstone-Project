@@ -30,8 +30,9 @@ const Header = ({
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border shadow-sm">
+    <header className="fixed top-0 left-0 right-0 z-30 bg-gray-100 dark:bg-gray-800 border-b border-border shadow-sm">
       <div className="flex items-center justify-between h-16 px-4 lg:px-6">
+
         {/* Mobile Menu Toggle */}
         <div className="flex items-center lg:hidden">
           <Button
@@ -39,6 +40,7 @@ const Header = ({
             size="icon"
             onClick={onMenuToggle}
             aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+            className="relative z-60"
           >
             <Icon name={isMobileMenuOpen ? 'X' : 'Menu'} size={24} className="text-foreground" />
           </Button>
@@ -47,8 +49,10 @@ const Header = ({
         {/* Logo / Brand */}
         <div className="flex items-center flex-1 lg:flex-none space-x-3">
           <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-            <Icon name="GraduationCap" size={20} color="white" />
+            {/* 🔥 Updated: Cap icon is now BLACK */}
+            <Icon name="GraduationCap" size={20} color="black" />
           </div>
+
           <div className="hidden sm:block">
             <h1 className="text-lg font-heading font-semibold text-foreground">
               Student Portfolio
@@ -61,6 +65,7 @@ const Header = ({
 
         {/* Right Side Actions */}
         <div className="flex items-center space-x-4">
+
           {/* Language Selector */}
           <div className="relative group">
             <Button
@@ -84,6 +89,7 @@ const Header = ({
                 >
                   <span className="text-base">{lang.flag}</span>
                   <span className="font-medium">{lang.label}</span>
+
                   {currentLanguage === lang.code && (
                     <Icon name="Check" size={16} className="ml-auto text-accent" />
                   )}
@@ -108,14 +114,17 @@ const Header = ({
                   <p className="text-sm font-medium text-foreground">Student Portfolio</p>
                   <p className="text-xs text-muted-foreground">Academic Showcase</p>
                 </div>
+
                 <button className="w-full flex items-center space-x-3 px-4 py-2 text-sm text-foreground hover:bg-muted transition">
                   <Icon name="Settings" size={16} />
                   <span>Settings</span>
                 </button>
+
                 <button className="w-full flex items-center space-x-3 px-4 py-2 text-sm text-foreground hover:bg-muted transition">
                   <Icon name="HelpCircle" size={16} />
                   <span>Help & Support</span>
                 </button>
+
                 <div className="border-t border-border mt-1 pt-1">
                   <button className="w-full flex items-center space-x-3 px-4 py-2 text-sm text-destructive hover:bg-destructive/10 transition">
                     <Icon name="LogOut" size={16} />
@@ -125,6 +134,7 @@ const Header = ({
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </header>
