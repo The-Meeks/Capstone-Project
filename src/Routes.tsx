@@ -12,6 +12,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import StudentDashboardHome from "./pages/dashboard/index";
 import DashboardLayout from "./pages/dashboard/dashboardLayout";
 import OnlinePresence from "./pages/presence";
+import SplashLanding from "./pages/splash";
 
 const Routes: React.FC = () => {
   return (
@@ -19,6 +20,9 @@ const Routes: React.FC = () => {
       <ErrorBoundary>
         <ScrollToTop />
         <RouterRoutes>
+          {/* Splash / Entry Route */}
+          <Route path="/" element={<SplashLanding/>} />
+
           {/* Dashboard parent route */}
           <Route path="/dashboard" element={<DashboardLayout />}>
             {/* Child routes */}
@@ -33,8 +37,7 @@ const Routes: React.FC = () => {
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
           </Route>
 
-          {/* Public or non-dashboard routes */}
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          {/* Catch-all for non-dashboard routes */}
           <Route path="*" element={<NotFound />} />
         </RouterRoutes>
       </ErrorBoundary>
@@ -43,5 +46,3 @@ const Routes: React.FC = () => {
 };
 
 export default Routes;
-
-
