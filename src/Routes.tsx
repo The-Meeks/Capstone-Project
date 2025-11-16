@@ -1,15 +1,17 @@
 import React from "react";
-import { BrowserRouter, Routes as RouterRoutes, Route } from "react-router-dom";
+import { BrowserRouter, Routes as RouterRoutes, Route, Navigate } from "react-router-dom";
+
+import ResumeViewer from "./pages/resume";
 import PresentationsGallery from "./pages/presentationsGallery";
-import ScrollToTop from "./components/ScrollToTop";
-import ErrorBoundary from "./components/ErrorBoundary";
-import NotFound from "./pages/NotFound";
-import StudentDashboard from "./pages/dashboard";
 import VideoPresentationsPage from "./pages/videoPresentation";
 import PhotoEssayGallery from "./pages/photoEssay";
-import ResumeViewer from "./pages/resume";
 import EssayDocumentViewer from "./pages/essayDocuments";
-
+import NotFound from "./pages/NotFound";
+import ScrollToTop from "./components/ScrollToTop";
+import ErrorBoundary from "./components/ErrorBoundary";
+import StudentDashboardHome from "./pages/dashboard/index";
+import DashboardLayout from "./pages/dashboard/dashboardLayout";
+import OnlinePresence from "./pages/presence";
 
 const Routes: React.FC = () => {
   return (
@@ -17,15 +19,23 @@ const Routes: React.FC = () => {
       <ErrorBoundary>
         <ScrollToTop />
         <RouterRoutes>
-          {/* Define your routes here */}
-        <Route path="/" element={<StudentDashboard />} />
-        <Route path="/video-presentations" element={<VideoPresentationsPage />} />
-        <Route path="/photo-essay-gallery" element={<PhotoEssayGallery />} />
-        <Route path="/resume-viewer" element={<ResumeViewer />} />
-        <Route path="/essay-document-viewer" element={<EssayDocumentViewer />} />
-        <Route path="/presentations-gallery" element={<PresentationsGallery />} />
-        <Route path="/student-dashboard" element={<StudentDashboard />} />
-        <Route path="*" element={<NotFound />} />
+          {/* Dashboard parent route */}
+          <Route path="/dashboard" element={<DashboardLayout />}>
+            {/* Child routes */}
+            <Route index element={<StudentDashboardHome />} />
+            <Route path="resume" element={<ResumeViewer />} />
+            <Route path="essays" element={<EssayDocumentViewer />} />
+            <Route path="presentations" element={<PresentationsGallery />} />
+            <Route path="videos" element={<VideoPresentationsPage />} />
+            <Route path="photos" element={<PhotoEssayGallery />} />
+            <Route path="presence" element={<OnlinePresence />} />
+            {/* Redirect unknown dashboard paths to home */}
+            <Route path="*" element={<Navigate to="/dashboard" replace />} />
+          </Route>
+
+          {/* Public or non-dashboard routes */}
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="*" element={<NotFound />} />
         </RouterRoutes>
       </ErrorBoundary>
     </BrowserRouter>
@@ -33,3 +43,5 @@ const Routes: React.FC = () => {
 };
 
 export default Routes;
+
+

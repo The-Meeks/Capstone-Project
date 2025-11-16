@@ -1,195 +1,103 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Header from '../../components/ui/Header';
-import Sidebar from '../../components/ui/Sidebar';
-import DashboardQuickActions from '../../components/ui/DashboardQuickActions';
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
-import {
-  StudentProfile,
-  PortfolioProgress as PortfolioProgressType,
-  DashboardStats as DashboardStatsType,
-  RecentActivity as RecentActivityType
-} from './types';
-import StudentProfileCard from './components/StudentProfile';
-import DashboardStats from './components/DashboardStats';
-import PortfolioProgress from './components/PortfolioProgram';
-import RecentActivity from './components/RecentActivity';
+import { StudentProfile } from "../dashboard/types/index";
+import StudentProfileCard from "./components/StudentProfile";
 
-const StudentDashboard = () => {
+const StudentDashboardHome = () => {
   const navigate = useNavigate();
-  const [currentLanguage, setCurrentLanguage] = useState('en');
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar toggle for mobile
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false); // Collapse for desktop
 
-  // Load language preference
-  useEffect(() => {
-    const savedLanguage = localStorage.getItem('portfolioLanguage');
-    if (savedLanguage) setCurrentLanguage(savedLanguage);
-  }, []);
-
-  const handleLanguageChange = (language: string) => {
-    setCurrentLanguage(language);
-    localStorage.setItem('portfolioLanguage', language);
-  };
-
-  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
-  const collapseSidebar = () => setIsSidebarCollapsed(!isSidebarCollapsed);
-
-  // Mock student profile
+  // Updated profile data for Abraham Kioko
   const studentProfile: StudentProfile = {
-    id: 'student-001',
-    name: 'Amara Okafor',
-    tagline: 'Innovative Computer Science Student & Cultural Preservation Advocate',
+    id: "student-001",
+    name: "Abraham Kioko",
+    tagline: "Innovative IT Student & Technology Enthusiast",
     education: {
-      degree: 'Bachelor of Science in Computer Science',
-      institution: 'University of Nairobi',
-      year: '2024',
-      gpa: '3.85/4.0'
+      degree: "BSc. Information Technology",
+      institution: "Dedan Kimathi University Of Technology",
+      year: "2025",
+      gpa: "Yet to complete course",
     },
     contact: {
-      email: 'amara.okafor@university.ac.ke',
-      phone: '+254 712 345 678',
-      location: 'Nairobi, Kenya',
-      linkedin: 'https://linkedin.com/in/amara-okafor'
+      email: "abraham.kioko@university.ac.ke",
+      phone: "+254 712 345 678",
+      location: "Nairobi, Kenya",
+      github: "https://github.com/abraham-kioko",
     },
     profileImage:
-      'https://img.rocket.new/generatedImages/rocket_gen_img_1c5746a0d-1762273807933.png',
+      "https://img.rocket.new/generatedImages/rocket_gen_img_1c5746a0d-1762273807933.png", // replace with your own if needed
     profileImageAlt:
-      'Professional headshot of young African woman with braided hair wearing blue blazer, smiling confidently at camera',
-    skills: [
-      { id: '1', name: 'React Development', category: 'technical', level: 'advanced' },
-      { id: '2', name: 'Python Programming', category: 'technical', level: 'expert' },
-      { id: '3', name: 'UI/UX Design', category: 'technical', level: 'intermediate' },
-      { id: '4', name: 'Leadership', category: 'soft', level: 'advanced' },
-      { id: '5', name: 'Public Speaking', category: 'soft', level: 'expert' },
-      { id: '6', name: 'English', category: 'language', level: 'expert' },
-      { id: '7', name: 'Kiswahili', category: 'language', level: 'expert' },
-      { id: '8', name: 'Igbo', category: 'language', level: 'advanced' },
-      { id: '9', name: 'Research Methods', category: 'academic', level: 'advanced' },
-      { id: '10', name: 'Data Analysis', category: 'academic', level: 'intermediate' }
-    ],
-    languages: ['English', 'Kiswahili', 'Igbo'],
-    summary: `Passionate computer science student with a deep commitment to preserving African cultural heritage through technology. My capstone project explores innovative solutions for documenting and sharing indigenous knowledge systems while addressing modern societal challenges. I combine technical expertise in software development with cultural research to create meaningful digital experiences that bridge traditional wisdom and contemporary innovation.`
+      "Professional headshot of Abraham Kioko wearing a smart casual outfit",
+    summary:
+      "I am a passionate Information Technology student focused on building innovative solutions that bridge technology with real-world applications. My interests span software development, data analytics, and tech-driven community projects.",
+      skills: [
+        { id: "skill-001", name: "JavaScript", category: "technical", level: "expert" },
+        { id: "skill-002", name: "React", category: "technical", level: "advanced" },
+        { id: "skill-003", name: "Node.js", category: "technical", level: "advanced" },
+        { id: "skill-004", name: "Python", category: "technical", level: "intermediate" },
+        { id: "skill-005", name: "SQL", category: "technical", level: "intermediate" },
+      ],
+          languages: ["English", "Swahili"],
   };
-
-  // Mock portfolio progress
-  const portfolioProgress: PortfolioProgressType = {
-    totalSections: 8,
-    completedSections: 6,
-    sections: [
-      { id: 'resume', name: 'Multilingual Resume', isCompleted: true, progress: 100, lastUpdated: new Date(Date.now() - 86400000) },
-      { id: 'presentations', name: 'Academic Presentations', isCompleted: true, progress: 100, lastUpdated: new Date(Date.now() - 172800000) },
-      { id: 'videos', name: 'Video Presentations', isCompleted: true, progress: 100, lastUpdated: new Date(Date.now() - 259200000) },
-      { id: 'essays', name: 'Autobiographical Essay', isCompleted: true, progress: 100, lastUpdated: new Date(Date.now() - 345600000) },
-      { id: 'photos', name: 'Photographic Essays', isCompleted: true, progress: 100, lastUpdated: new Date(Date.now() - 432000000) },
-      { id: 'innovation', name: 'Innovation Showcase', isCompleted: true, progress: 100, lastUpdated: new Date(Date.now() - 518400000) },
-      { id: 'culture', name: 'African Culture Presentation', isCompleted: false, progress: 75, lastUpdated: new Date(Date.now() - 604800000) },
-      { id: 'challenges', name: 'Modern Society Challenges', isCompleted: false, progress: 60, lastUpdated: new Date(Date.now() - 691200000) }
-    ]
-  };
-
-  // Mock dashboard stats
-  const dashboardStats: DashboardStatsType = {
-    totalViews: 1247,
-    documentsUploaded: 12,
-    presentationsCreated: 8,
-    videosRecorded: 6,
-    essaysWritten: 4
-  };
-
-  // Mock recent activities
-  const recentActivities: RecentActivityType[] = [
-    { id: '1', type: 'upload', title: 'Innovation Presentation', description: 'Uploaded final slides for technology innovation showcase presentation', timestamp: new Date(Date.now() - 3600000), icon: 'Upload' },
-    { id: '2', type: 'edit', title: 'Resume Document', description: 'Updated skills section and added recent project experience', timestamp: new Date(Date.now() - 7200000), icon: 'Edit3' },
-    { id: '3', type: 'view', title: 'Portfolio Analytics', description: 'Reviewed portfolio performance metrics and visitor engagement', timestamp: new Date(Date.now() - 14400000), icon: 'Eye' },
-    { id: '4', type: 'share', title: 'Video Presentation', description: 'Shared cultural preservation video with academic review committee', timestamp: new Date(Date.now() - 28800000), icon: 'Share2' },
-    { id: '5', type: 'upload', title: 'Photo Essay Collection', description: 'Added new images to community development photographic essay', timestamp: new Date(Date.now() - 86400000), icon: 'Camera' }
-  ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
-      {/* Header */}
-      <Header
-        onMenuToggle={toggleSidebar}
-        isMobileMenuOpen={isSidebarOpen}
-        currentLanguage={currentLanguage}
-        onLanguageChange={handleLanguageChange}
+    <div className="space-y-10 pb-10">
+
+      {/* Welcome message */}
+      <div className="space-y-2">
+        <h1 className="text-3xl font-heading font-bold text-foreground">
+          Welcome back, {studentProfile.name.split(' ')[0]} 👋
+        </h1>
+        <p className="text-muted-foreground text-sm">
+          Here’s a quick snapshot of your profile overview.
+        </p>
+      </div>
+
+      {/* Profile Card */}
+      <StudentProfileCard
+        profile={studentProfile}
+        currentLanguage="en"
+        onLanguageChange={(lang) => console.log("Language changed:", lang)}
       />
 
-      <div className="flex flex-1 pt-16">
-        {/* Sidebar */}
-        <Sidebar
-          isCollapsed={isSidebarCollapsed}
-          isMobileOpen={isSidebarOpen}
-          onMobileClose={() => setIsSidebarOpen(false)}
-          currentLanguage={currentLanguage}
-          onLanguageChange={handleLanguageChange}
-        />
-
-        {/* Main Content */}
-        <main
-          className={`flex-1 transition-all duration-300 p-6 ${isSidebarOpen ? 'lg:ml-64' : 'lg:ml-64'} ${isSidebarCollapsed ? 'lg:ml-20' : ''}`}
-        >
-          {/* Welcome Section */}
-          <div className="space-y-2">
-            <h1 className="text-3xl font-heading font-bold text-foreground">
-              Welcome back, {studentProfile.name.split(' ')[0]}! 👋
-            </h1>
-            <p className="text-muted-foreground">
-              Here's an overview of your capstone portfolio progress and recent activity.
-            </p>
-          </div>
-
-          {/* Student Profile Card */}
-          <StudentProfileCard
-            profile={studentProfile}
-            currentLanguage={currentLanguage}
-            onLanguageChange={handleLanguageChange}
-          />
-
-          {/* Dashboard Grid */}
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 mt-6">
-            <div className="xl:col-span-2 space-y-8">
-              <DashboardQuickActions />
-              <PortfolioProgress progress={portfolioProgress} />
-              <DashboardStats stats={dashboardStats} />
-            </div>
-            <div className="space-y-8">
-              <RecentActivity activities={recentActivities} />
-            </div>
-          </div>
-
-          {/* Bottom Actions */}
-          <div className="bg-gradient-to-r from-primary/5 to-accent/5 border border-border rounded-lg p-6 mt-8">
-            <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
-              <div>
-                <h3 className="text-lg font-heading font-semibold text-foreground mb-2">
-                  Ready to share your portfolio?
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  Your capstone portfolio is {Math.round((portfolioProgress.completedSections / portfolioProgress.totalSections) * 100)}% complete and ready for academic review.
-                </p>
-              </div>
-              <div className="flex flex-col sm:flex-row gap-3">
-                <button
-                  onClick={() => navigate('/resume-viewer')}
-                  className="px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium"
-                >
-                  Preview Portfolio
-                </button>
-                <button
-                  onClick={() => navigate('/presentations-gallery')}
-                  className="px-6 py-2 border border-border text-foreground rounded-lg hover:bg-muted transition-colors font-medium"
-                >
-                  Download PDF
-                </button>
-              </div>
-            </div>
-          </div>
-        </main>
+      {/* About Section */}
+      <div className="bg-white border rounded-xl p-6 shadow-sm">
+        <h2 className="font-heading text-xl font-semibold text-foreground mb-2">
+          About Me
+        </h2>
+        <p className="text-muted-foreground text-sm leading-relaxed">
+          {studentProfile.summary}
+        </p>
       </div>
+
+      {/* Call to Action */}
+      <div className="mt-8 bg-gradient-to-r from-[#b7e7c3]/40 to-[#f7f3e9]/60 border rounded-xl p-6">
+        <h3 className="text-lg font-heading font-semibold mb-2">
+          Ready to share your story?
+        </h3>
+        <p className="text-sm text-muted-foreground mb-4">
+          Preview your portfolio or download your profile document.
+        </p>
+
+        <div className="flex gap-3">
+          <button
+            className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+            onClick={() => navigate("/resume-viewer")}
+          >
+            Preview Portfolio
+          </button>
+
+          <button
+            className="px-6 py-2 border border-border rounded-lg hover:bg-muted"
+            onClick={() => navigate("/presentations-gallery")}
+          >
+            Download PDF
+          </button>
+        </div>
+      </div>
+
     </div>
   );
 };
 
-export default StudentDashboard;
+export default StudentDashboardHome;

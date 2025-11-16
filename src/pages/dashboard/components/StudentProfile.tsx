@@ -1,8 +1,8 @@
-import React from 'react';
-import Image from '../../../components/AppImage';
-import Icon from '../../../components/AppIcon';
-import Button from '../../../components/ui/Button';
-import { StudentProfile } from '../types';
+import React from "react";
+import Image from "../../../components/AppImage";
+import Icon from "../../../components/AppIcon";
+import Button from "../../../components/ui/Button";
+import { StudentProfile } from "../types";
 
 interface StudentProfileCardProps {
   profile: StudentProfile;
@@ -11,50 +11,52 @@ interface StudentProfileCardProps {
   className?: string;
 }
 
-const StudentProfileCard = ({ 
-  profile, 
-  currentLanguage, 
-  onLanguageChange, 
-  className = '' 
+const StudentProfileCard = ({
+  profile,
+  currentLanguage,
+  onLanguageChange,
+  className = "",
 }: StudentProfileCardProps) => {
   const languages = [
-    { code: 'en', name: 'English', flag: '🇺🇸' },
-    { code: 'sw', name: 'Kiswahili', flag: '🇹🇿' },
-    { code: 'ig', name: 'Indigenous', flag: '🌍' }
+    { code: "en", name: "English", flag: "🇺🇸" },
+    { code: "sw", name: "Kiswahili", flag: "🇹🇿" },
+    { code: "ig", name: "Indigenous", flag: "🌍" },
   ];
 
   const getSkillColor = (category: string) => {
     switch (category) {
-      case 'technical':
-        return 'bg-primary/10 text-primary border-primary/20';
-      case 'soft':
-        return 'bg-secondary/10 text-secondary border-secondary/20';
-      case 'language':
-        return 'bg-accent/10 text-accent border-accent/20';
-      case 'academic':
-        return 'bg-success/10 text-success border-success/20';
+      case "technical":
+        return "bg-primary/10 text-primary border-primary/20";
+      case "soft":
+        return "bg-secondary/10 text-secondary border-secondary/20";
+      case "language":
+        return "bg-accent/10 text-accent border-accent/20";
+      case "academic":
+        return "bg-success/10 text-success border-success/20";
       default:
-        return 'bg-muted text-muted-foreground border-border';
+        return "bg-muted text-muted-foreground border-border";
     }
   };
 
   const getLevelIcon = (level: string) => {
     switch (level) {
-      case 'expert':
-        return 'Star';
-      case 'advanced':
-        return 'TrendingUp';
-      case 'intermediate':
-        return 'Circle';
-      case 'beginner':
-        return 'CircleDot';
+      case "expert":
+        return "Star";
+      case "advanced":
+        return "TrendingUp";
+      case "intermediate":
+        return "Circle";
+      case "beginner":
+        return "CircleDot";
       default:
-        return 'Circle';
+        return "Circle";
     }
   };
 
   return (
-    <div className={`bg-card border border-border rounded-lg elevation-1 overflow-hidden ${className}`}>
+    <div
+      className={`bg-card border border-border rounded-lg elevation-1 overflow-hidden ${className}`}
+    >
       {/* Header with Language Toggle */}
       <div className="p-6 border-b border-border bg-gradient-to-r from-primary/5 to-accent/5">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -71,14 +73,12 @@ const StudentProfileCard = ({
                 <Icon name="Check" size={12} color="white" />
               </div>
             </div>
-            
+
             <div className="flex-1">
               <h1 className="text-2xl font-heading font-bold text-foreground mb-1">
                 {profile.name}
               </h1>
-              <p className="text-accent font-medium mb-2">
-                {profile.tagline}
-              </p>
+              <p className="text-accent font-medium mb-2">{profile.tagline}</p>
               <div className="flex items-center space-x-4 text-sm text-muted-foreground">
                 <div className="flex items-center space-x-1">
                   <Icon name="GraduationCap" size={14} />
@@ -100,9 +100,10 @@ const StudentProfileCard = ({
                 onClick={() => onLanguageChange(lang.code)}
                 className={`
                   flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-academic
-                  ${currentLanguage === lang.code 
-                    ? 'bg-primary text-primary-foreground' 
-                    : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                  ${
+                    currentLanguage === lang.code
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted"
                   }
                 `}
               >
@@ -127,11 +128,19 @@ const StudentProfileCard = ({
               <div className="flex items-start space-x-3">
                 <Icon name="School" size={16} className="text-primary mt-0.5" />
                 <div>
-                  <p className="font-medium text-foreground">{profile.education.degree}</p>
-                  <p className="text-sm text-muted-foreground">{profile.education.institution}</p>
-                  <p className="text-xs text-muted-foreground">{profile.education.year}</p>
+                  <p className="font-medium text-foreground">
+                    {profile.education.degree}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    {profile.education.institution}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {profile.education.year}
+                  </p>
                   {profile.education.gpa && (
-                    <p className="text-xs text-success font-medium">GPA: {profile.education.gpa}</p>
+                    <p className="text-xs text-success font-medium">
+                      Average: {profile.education.gpa}
+                    </p>
                   )}
                 </div>
               </div>
@@ -146,7 +155,7 @@ const StudentProfileCard = ({
             <div className="space-y-2">
               <div className="flex items-center space-x-3">
                 <Icon name="Mail" size={16} className="text-accent" />
-                <a 
+                <a
                   href={`mailto:${profile.contact.email}`}
                   className="text-sm text-foreground hover:text-accent transition-colors"
                 >
@@ -155,23 +164,23 @@ const StudentProfileCard = ({
               </div>
               <div className="flex items-center space-x-3">
                 <Icon name="Phone" size={16} className="text-accent" />
-                <a 
+                <a
                   href={`tel:${profile.contact.phone}`}
                   className="text-sm text-foreground hover:text-accent transition-colors"
                 >
                   {profile.contact.phone}
                 </a>
               </div>
-              {profile.contact.linkedin && (
+              {profile.contact.github && (
                 <div className="flex items-center space-x-3">
-                  <Icon name="Linkedin" size={16} className="text-accent" />
-                  <a 
-                    href={profile.contact.linkedin}
+                  <Icon name="Github" size={16} className="text-accent" />
+                  <a
+                    href={profile.contact.github}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-sm text-foreground hover:text-accent transition-colors"
                   >
-                    LinkedIn Profile
+                    GitHub Profile
                   </a>
                 </div>
               )}
@@ -212,24 +221,24 @@ const StudentProfileCard = ({
 
         {/* Quick Actions */}
         <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-border">
-          <Button 
-            variant="default" 
+          <Button
+            variant="default"
             className="flex-1"
             iconName="Download"
             iconPosition="left"
           >
             Download Resume
           </Button>
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             className="flex-1"
             iconName="Share2"
             iconPosition="left"
           >
             Share Portfolio
           </Button>
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             className="flex-1"
             iconName="Eye"
             iconPosition="left"

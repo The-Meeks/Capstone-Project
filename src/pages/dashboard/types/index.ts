@@ -12,7 +12,7 @@ export interface StudentProfile {
       email: string;
       phone: string;
       location: string;
-      linkedin?: string;
+      github?: string;
     };
     profileImage: string;
     profileImageAlt: string;

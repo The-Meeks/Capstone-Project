@@ -27,12 +27,10 @@ const PresentationCard = ({ presentation, onClick, currentLanguage }: Presentati
   };
 
   const formatDuration = (minutes: number) => {
-    if (minutes < 60) {
-      return `${minutes}m`;
-    }
+    if (minutes < 60) return `${minutes}m`;
     const hours = Math.floor(minutes / 60);
-    const remainingMinutes = minutes % 60;
-    return remainingMinutes > 0 ? `${hours}h ${remainingMinutes}m` : `${hours}h`;
+    const remaining = minutes % 60;
+    return remaining > 0 ? `${hours}h ${remaining}m` : `${hours}h`;
   };
 
   const formatDate = (dateString: string) => {
@@ -40,14 +38,14 @@ const PresentationCard = ({ presentation, onClick, currentLanguage }: Presentati
     return date.toLocaleDateString(currentLanguage === 'en' ? 'en-US' : 'sw-TZ', {
       year: 'numeric',
       month: 'short',
-      day: 'numeric'
+      day: 'numeric',
     });
   };
 
   return (
     <div
       onClick={() => onClick(presentation)}
-      className="group bg-card border border-border rounded-lg overflow-hidden hover-elevation transition-academic cursor-pointer"
+      className="group bg-card border border-border rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
     >
       {/* Thumbnail */}
       <div className="relative aspect-video bg-muted overflow-hidden">
@@ -56,11 +54,11 @@ const PresentationCard = ({ presentation, onClick, currentLanguage }: Presentati
           alt={presentation.thumbnailAlt}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
         />
-        
-        {/* Overlay */}
+
+        {/* Overlay Play Icon */}
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
           <div className="w-12 h-12 bg-white/90 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 scale-90 group-hover:scale-100">
-            <Icon name="Play" size={20} className="text-primary ml-1" />
+            <Icon name="Play" size={20} className="text-primary" />
           </div>
         </div>
 
@@ -80,18 +78,16 @@ const PresentationCard = ({ presentation, onClick, currentLanguage }: Presentati
 
       {/* Content */}
       <div className="p-4 space-y-3">
-        <div className="space-y-2">
-          <h3 className="font-heading font-semibold text-foreground text-lg leading-tight group-hover:text-primary transition-colors">
-            {presentation.title}
-          </h3>
-          <p className="text-sm text-muted-foreground font-caption leading-relaxed line-clamp-2">
-            {presentation.description}
-          </p>
-        </div>
+        <h3 className="font-heading font-semibold text-foreground text-lg sm:text-xl group-hover:text-primary transition-colors line-clamp-2">
+          {presentation.title}
+        </h3>
+        <p className="text-sm text-muted-foreground font-caption leading-relaxed line-clamp-3">
+          {presentation.description}
+        </p>
 
         {/* Metadata */}
-        <div className="flex items-center justify-between text-xs text-muted-foreground">
-          <div className="flex items-center space-x-3">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-xs text-muted-foreground space-y-2 sm:space-y-0">
+          <div className="flex flex-wrap items-center space-x-3">
             <div className="flex items-center space-x-1">
               <Icon name="Calendar" size={12} />
               <span>{formatDate(presentation.date)}</span>
@@ -101,7 +97,7 @@ const PresentationCard = ({ presentation, onClick, currentLanguage }: Presentati
               <span>{formatDuration(presentation.duration)}</span>
             </div>
           </div>
-          
+
           <div className="flex items-center space-x-1">
             <Icon name="Tag" size={12} />
             <span className="capitalize">{presentation.category}</span>
@@ -110,10 +106,10 @@ const PresentationCard = ({ presentation, onClick, currentLanguage }: Presentati
 
         {/* Tags */}
         {presentation.tags.length > 0 && (
-          <div className="flex flex-wrap gap-1">
-            {presentation.tags.slice(0, 3).map((tag, index) => (
+          <div className="flex flex-wrap gap-1 mt-2">
+            {presentation.tags.slice(0, 3).map((tag, idx) => (
               <span
-                key={index}
+                key={idx}
                 className="px-2 py-1 bg-muted text-muted-foreground text-xs rounded-md font-caption"
               >
                 {tag}
